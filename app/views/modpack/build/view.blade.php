@@ -71,6 +71,88 @@
 			</tbody>
 		</table>
 		</div>
+
+		<div class="table-responsive">
+		<table class="table">
+			<thead>
+				<th style="width: 60%">Add a Base Modpack</th>
+				<th></th>
+				<th></th>
+			</thead>
+			<tbody>
+			<form method="post" action="{{ URL::to('modpack/build/modify') }}" class="base-add">
+			<input type="hidden" name="build" value="{{ $build->id }}">
+			<input type="hidden" name="action" value="base-add">
+			<tr id="base-list-add">
+				<td>
+					<i class="icon-plus"></i>
+					<select class="form-control" name="base-modpack" id="base-modpack" placeholder="Select a Modpack...">
+						@foreach (Modpack::where('id', '!=', $build->modpack->id)->get() as $modpack)
+						<option value="{{ $modpack->slug }}">{{ $modpack->name }}</option>
+						@endforeach
+					</select>
+				</td>
+				<td>
+					<select class="form-control" name="base-build" id="base-build" placeholder="Select a build...">
+					</select>
+				</td>
+				<td>
+					<button type="submit" class="btn btn-success btn-small">Add Base Modpack</button>
+				</td>
+			</tr>
+			</form>
+			</tbody>
+		</table>
+		</div>
+	</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+	Base Management: {{ $build->modpack->name }} - Build {{ $build->version }}
+	</div>
+	<div class="panel-body">
+
+		<div class="table-responsive">
+		<table class="table" id="modpack-list">
+			<thead>
+				<th id="mod-header" style="width: 60%">Modpack</th>
+				<th>Build</th>
+				<th></th>
+			</thead>
+			<tbody>
+				@foreach ($build->basebuilds as $base)
+				<tr>
+					<td>{{ HTML::link('modpack/view/'.$base->id, $base->modpack->name) }} ({{ $base->modpack->slug }})</td>
+					<td>
+						<form method="post" action="{{ URL::to('modpack/build/modify') }}" style="margin-bottom: 0" class="base-version">
+							<input type="hidden" class="build-id" name="build_id" value="{{ $build->id }}">
+							<input type="hidden" class="base-id" name="base_id" value="{{ $base->id }}">
+							<input type="hidden" name="action" value="base-version">
+							<div class="form-group input-group">
+								<select class="form-control" name="version">
+									@foreach ($base->modpack->builds as $base_builds)
+									<option value="{{ $base_builds->id }}"{{ $selected = ($base->version == $base_builds->version ? 'selected' : '') }}>{{ $base_builds->version }}</option>
+									@endforeach
+								</select>
+								<span class="input-group-btn">
+									<button type="submit" class="btn btn-primary">Change</button>
+								</span>
+							</div>
+						</form>
+					</td>
+					<td>
+						<form method="post" action="{{ URL::to('modpack/build/modify') }}" style="margin-bottom: 0" class="base-delete">
+							<input type="hidden" name="build_id" value="{{ $build->id }}">
+							<input type="hidden" class="base-id" name="base_id" value="{{ $base->pivot->base_id }}">
+							<input type="hidden" name="action" value="base-delete">
+							<button type="submit" class="btn btn-danger btn-small">Remove</button>
+						</form>
+					</td>
+				</tr>
+				@endforeach
+			</tbody>
+		</table>
+		</div>
 	</div>
 </div>
 <div class="panel panel-default">
@@ -86,10 +168,11 @@
 				<th></th>
 			</thead>
 			<tbody>
-				@foreach ($build->modversions->sortByDesc('build_id', SORT_NATURAL) as $ver)
+				@foreach ($modversions as $ver)
 				<tr>
 					<td>{{ HTML::link('mod/view/'.$ver->mod->id, $ver->mod->pretty_name) }} ({{ $ver->mod->name }})</td>
 					<td>
+						@if ($build->modversions->contains($ver->id))
 						<form method="post" action="{{ URL::to('modpack/build/modify') }}" style="margin-bottom: 0" class="mod-version">
 							<input type="hidden" class="build-id" name="build_id" value="{{ $build->id }}">
 							<input type="hidden" class="modversion-id" name="modversion_id" value="{{ $ver->pivot->modversion_id }}">
@@ -105,13 +188,20 @@
 								</span>
 							</div>
 						</form>
+						@else
+						From Base Modpack
+						@endif
 					</td>
 					<td>
 						<form method="post" action="{{ URL::to('modpack/build/modify') }}" style="margin-bottom: 0" class="mod-delete">
 							<input type="hidden" name="build_id" value="{{ $build->id }}">
 							<input type="hidden" class="modversion-id" name="modversion_id" value="{{ $ver->pivot->modversion_id }}">
 							<input type="hidden" name="action" value="delete">
+							@if ($build->modversions->contains($ver->id))
 							<button type="submit" class="btn btn-danger btn-small">Remove</button>
+							@else
+							<button type="submit" class="btn btn-danger btn-small" disabled="disabled">Remove</button>
+							@endif
 						</form>
 					</td>
 				</tr>
@@ -142,6 +232,24 @@ var $select = $("#mod-version").selectize({
 				},
 		});
 var modversion = $select[0].selectize;
+var $select = $("#base-modpack").selectize({
+			persist: false,
+			maxItems: 1,
+			sortField: {
+				field: 'text',
+				direction: 'asc'
+			},
+		});
+var modpack = $select[0].selectize;
+var $select = $("#base-build").selectize({
+			persist: false,
+			maxItems: 1,
+			sortField: {
+					field: 'text',
+					direction: 'asc'
+				},
+		});
+var modpackbuild = $select[0].selectize;
 
 $(".mod-version").submit(function(e) {
 	e.preventDefault();
@@ -163,6 +271,26 @@ $(".mod-version").submit(function(e) {
 	});
 });
 
+$(".base-version").submit(function(e) {
+	e.preventDefault();
+	$.ajax({
+		type: "POST",
+		url: "{{ URL::to('modpack/modify/base-version') }}",
+		data: $(this).serialize(),
+		success: function (data) {
+			console.log(data.reason);
+			if(data.status == 'success'){
+				$("#success-ajax").stop(true, true).html("Modpack Updated").fadeIn().delay(2000).fadeOut();
+			} else if(data.status == 'failed') {
+				$("#warning-ajax").stop(true, true).html("Unable to update modpack").fadeIn().delay(2000).fadeOut();
+			}
+		},
+		error: function (xhr, textStatus, errorThrown) {
+			$("#danger-ajax").stop(true, true).html(textStatus + ': ' + errorThrown).fadeIn().delay(3000).fadeOut();
+		}
+	});
+});
+
 $(".mod-delete").submit(function(e) {
 	e.preventDefault();
 	$.ajax({
@@ -175,6 +303,27 @@ $(".mod-delete").submit(function(e) {
 				$("#success-ajax").stop(true, true).html("Modversion Deleted").fadeIn().delay(2000).fadeOut();
 			} else {
 				$("#warning-ajax").stop(true, true).html("Unable to delete modversion").fadeIn().delay(2000).fadeOut();
+			}
+		},
+		error: function (xhr, textStatus, errorThrown) {
+			$("#danger-ajax").stop(true, true).html(textStatus + ': ' + errorThrown).fadeIn().delay(3000).fadeOut();
+		}
+	});
+	$(this).parent().parent().fadeOut();
+});
+
+$(".base-delete").submit(function(e) {
+	e.preventDefault();
+	$.ajax({
+		type: "POST",
+		url: "{{ URL::to('modpack/modify/base-delete') }}",
+		data: $(this).serialize(),
+		success: function (data) {
+			console.log(data.reason);
+			if(data.status == 'success'){
+				$("#success-ajax").stop(true, true).html("Modpack Deleted").fadeIn().delay(2000).fadeOut();
+			} else {
+				$("#warning-ajax").stop(true, true).html("Unable to delete Modpack").fadeIn().delay(2000).fadeOut();
 			}
 		},
 		error: function (xhr, textStatus, errorThrown) {
@@ -208,6 +357,30 @@ $(".mod-add").submit(function(e) {
 	}
 });
 
+$(".base-add").submit(function(e) {
+	e.preventDefault();
+	if($("#base-build").val()){
+		$.ajax({
+			type: "POST",
+			url: "{{ URL::to('modpack/modify/base-add') }}",
+			data: $(this).serialize(),
+			success: function (data) {
+				if(data.status == 'success'){
+					$("#base-list-add").after('<tr><td>' + data.name + '</td><td>' + data.version + '</td><td></td></tr>');
+					//$("#success-ajax").stop(true, true).html("Mod " + data.pretty_name + " added at " + data.version).fadeIn().delay(2000).fadeOut();
+				} else {
+					$("#warning-ajax").stop(true, true).html("Unable to add modpack. Reason: " + data.reason).fadeIn().delay(2000).fadeOut();
+				}
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				$("#danger-ajax").stop(true, true).html(textStatus + ': ' + errorThrown).fadeIn().delay(3000).fadeOut();
+			}
+		});
+	} else {
+		$("#warning-ajax").stop(true, true).html("Please select a Build").fadeIn().delay(2000).fadeOut();
+	}
+});
+
 function refreshModVersions() {
 	modversion.disable();
 	modversion.clearOptions();
@@ -233,9 +406,43 @@ function refreshModVersions() {
 	modversion.enable();
 }
 
+function refreshModpackBuilds() {
+	modpackbuild.disable();
+	modpackbuild.clearOptions();
+	$.ajax({
+		type: "GET",
+		url: "{{ URL::to('api/modpack/') }}/" + modpack.getValue() + "/?k={{ Config::get('solder.app_key') }}",
+		success: function (data) {
+			if (data.builds.length === 0){
+				$("#warning-ajax").stop(true, true).html("No Builds found for " + data.name).fadeIn().delay(2000).fadeOut();
+				$("#modpack-build").attr("placeholder", "No Builds found...");
+			} else {
+				$(data.builds).each(function(e, m) {
+					modpackbuild.addOption({value: m, text: m});
+					modpackbuild.refreshOptions(false);
+					$("#modpack-build").attr("placeholder", "Select a Build...");
+				});
+			}
+		},
+		error: function (xhr, textStatus, errorThrown) {
+			$("#danger-ajax").stop(true, true).html(textStatus + ': ' + errorThrown).fadeIn().delay(3000).fadeOut();
+		}
+	});
+	modpackbuild.enable();
+}
+
 mod.on('change', refreshModVersions);
+modpack.on('change', refreshModpackBuilds);
 
 $( document ).ready(function() {
+	$("#modpack-list").dataTable({
+			"order": [[ 0, "asc" ]],
+			"autoWidth": false,
+			"columnDefs": [
+			{ "width": "60%", "targets": 0 },
+			{ "width": "30%", "targets": 1 }
+		]
+	});
 	$("#mod-list").dataTable({
     	"order": [[ 0, "asc" ]],
     	"autoWidth": false,
@@ -245,6 +452,7 @@ $( document ).ready(function() {
 		]
     });
     refreshModVersions();
+	refreshModpackBuilds();
 });
 </script>
 @endsection
