@@ -52,6 +52,18 @@ return array(
 	 * This is the bucket that will be used to store your pack resources
 	 */
 	'bucket' => 'solder',
+
+	/**
+	* Internal API key
+	*
+	* This key will be used by the application itself for ajax functionality. This
+	* is hopefully a temporary workaround until the security system can be rebuilt
+	* to recognize internal requests against the API.
+	*
+	* You will need to create a key under Configure -> API Key Management, then paste
+	* the key here.
+	*/
+	'app_key' => '',
 );
 
 ?>

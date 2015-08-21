@@ -100,7 +100,11 @@ class ModpackController extends BaseController {
 			$minecraft = MinecraftUtils::getMinecraft();
 			return View::make('modpack.build.edit')->with('build', $build)->with('minecraft', $minecraft);
 		} else {
-			return View::make('modpack.build.view')->with('build', $build);
+			$modversions = $build->modversions;
+			foreach ($build->basebuilds as $basebuild) {
+				$modversions = $modversions->merge($basebuild->modversions);
+			}
+			return View::make('modpack.build.view')->with('build', $build)->with('modversions', $modversions);
 		}
 	}
 
@@ -562,6 +566,7 @@ class ModpackController extends BaseController {
 		foreach ($modpack->builds as $build)
 		{
 			$build->modversions()->sync(array());
+			$build->basebuilds()->sync(array());
 			$build->delete();
 		}
 
@@ -604,6 +609,24 @@ class ModpackController extends BaseController {
 							'reason' => 'Rows Affected: '.$affected
 							));
 				break;
+				case "base-version":
+					$version_id = Input::get('version');
+					$base_id = Input::get('base_id');
+					$affected = DB::table('build_bases')
+								->where('build_id','=', Input::get('build_id'))
+								->where('base_id', '=', $base_id)
+								->update(array('base_id' => $version_id));
+					$status = 'success';
+					if ($affected == 0 && ($base_id != $version_id)){
+						$status = 'failed';
+					} else {
+						$status = 'aborted';
+					}
+					return Response::json(array(
+								'status' => $status,
+								'reason' => 'Rows Affected: '.$affected
+								));
+					break;
 			case "delete":
 				$affected = DB::table('build_modversion')
 							->where('build_id','=', Input::get('build_id'))
@@ -618,14 +641,32 @@ class ModpackController extends BaseController {
 							'reason' => 'Rows Affected: '.$affected
 							));
 				break;
+				case "base-delete":
+					$affected = DB::table('build_bases')
+								->where('build_id','=', Input::get('build_id'))
+								->where('base_id', '=', Input::get('base_id'))
+								->delete();
+					$status = 'success';
+					if ($affected == 0){
+						$status = 'failed';
+					}
+					return Response::json(array(
+								'status' => $status,
+								'reason' => 'Rows Affected: '.$affected
+								));
+					break;
 			case "add":
 				$build = Build::find(Input::get('build'));
+				$builds[] = $build->id;
+				foreach ($build->basebuilds as $basebuild) {
+					$builds[] = $basebuild->id;
+				}
 				$mod = Mod::where('name','=',Input::get('mod-name'))->first();
 				$ver = Modversion::where('mod_id','=', $mod->id)
 									->where('version','=', Input::get('mod-version'))
 									->first();
 				$affected = DB::table('build_modversion')
-							->where('build_id','=', $build->id)
+							->whereIn('build_id', $builds)
 							->where('modversion_id', '=', $ver->id)
 							->get();
 				$duplicate = !(empty($affected));
@@ -640,6 +681,34 @@ class ModpackController extends BaseController {
 								'status' => 'success',
 								'pretty_name' => $mod->pretty_name,
 								'version' => $ver->version
+								));
+				}
+				break;
+			case "base-add":
+				$build = Build::find(Input::get('build'));
+				$modpack = Modpack::where('slug', '=', Input::get('base-modpack'))->first();
+				$base = Build::where('modpack_id','=',$modpack->id)->where('version','=',Input::get('base-build'))->first();
+				$affected = DB::table('build_bases')
+							->where('build_id','=', $build->id)
+							->where('base_id', '=', $base->id)
+							->get();
+				$modlist = $build->modversions;
+				foreach ($build->basebuilds as $basebuild) {
+					$modlist = $modlist->merge($basebuild->modversions);
+				}
+				Log::info($modlist->intersect($base->modversions)->isEmpty());
+				$duplicate = !(empty($affected)) || !($modlist->intersect($base->modversions)->isEmpty());
+				if($duplicate){
+					return Response::json(array(
+								'status' => 'failed',
+								'reason' => 'Duplicate base or mod found'
+								));
+				} else {
+					$build->basebuilds()->attach($base->id);
+					return Response::json(array(
+								'status' => 'success',
+								'name' => $base->modpack->name,
+								'version' => $base->version
 								));
 				}
 				break;
