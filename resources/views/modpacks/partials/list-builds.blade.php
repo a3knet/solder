@@ -69,7 +69,7 @@
                     <form method="post" action="/modpacks/{{ $modpack->slug }}/{{ $build->version }}">
                         {{ csrf_field() }}
                         {{ method_field('delete') }}
-                        <button class="button is-danger is-small is-outlined">Delete</button>
+                        <button class="button is-danger is-small">Delete</button>
                     </form>
                 </td>
             </tr>

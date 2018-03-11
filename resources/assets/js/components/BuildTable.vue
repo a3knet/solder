@@ -14,7 +14,7 @@
             <td>{{ row.version }}</td>
             <td>{{ row.filesize | prettyBytes }}</td>
             <td class="has-text-right">
-                <a @click="destroy(row)" class="button is-small is-outlined is-danger">Remove</a>
+                <a @click="destroy(row)" class="button is-small is-danger">Remove</a>
             </td>
         </tr>
         </tbody>

@@ -28,7 +28,7 @@
                     </a>
                 </td>
                 <td class="has-text-right">
-                    <a @click="destroy(release)" class="button is-small is-outlined is-danger">Remove</a>
+                    <a @click="destroy(release)" class="button is-small is-danger">Remove</a>
                 </td>
             </tr>
             </tbody>

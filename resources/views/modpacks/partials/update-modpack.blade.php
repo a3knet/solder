@@ -63,7 +63,7 @@
                 </div>
                 <div class="field-body">
                     <div class="control">
-                        <button class="button" type="submit">Update</button>
+                        <button class="button is-success" type="submit">Update</button>
                     </div>
                 </div>
             </div>

@@ -22,6 +22,18 @@
   @extend .has-text-danger;
 }
 
+.is-public {
+    @extend .is-success;
+}
+
+.is-private {
+    @extend .is-warning;
+}
+
+.is-draft {
+    @extend .is-danger;
+}
+
 .section.is-small {
   padding: 0.75rem;
 }

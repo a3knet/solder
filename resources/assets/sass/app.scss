@@ -10,11 +10,35 @@
 @import "list-group";
 @import "menu";
 
-footer div.container {
-    position: absolute;
-    bottom: 32px;
-    right: 0;
+#app {
+    font-size: 14px;
+    margin-bottom: 0px;
 }
+
+footer {
+    position: fixed;
+    z-index: 1001;
+    /* width: 30px;
+    height: 30px; */
+    display: block;
+    /*position: absolute; */
+    bottom: 0px;
+    right: 20px;
+}
+
+footer div.content {
+    background-color: $light;
+}
+
+/* footer div.container {
+    position: fixed;
+    z-index: 1001;
+    display: block;
+    bottom: 2px;
+    right: 0;
+    width: 100%;
+    background-color: $light;
+} */
 
 .rotate {
   text-align: left;

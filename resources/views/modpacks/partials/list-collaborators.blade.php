@@ -26,7 +26,7 @@
                                 <form method="post" action="/collaborators/{{ $collaborator->id }}">
                                     {{ csrf_field() }}
                                     {{ method_field('delete') }}
-                                    <button class="button is-danger is-outlined">Delete</button>
+                                    <button class="button is-danger">Delete</button>
                                 </form>
                             </div>
                         </div>

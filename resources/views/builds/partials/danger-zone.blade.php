@@ -7,7 +7,7 @@
                     <div class="level-item">
                         <div class="content">
                             <strong>Update build status</strong><br />
-                            Change the visibility status of this build.
+                            <small>Change the visibility status of this build.</small>
                         </div>
                     </div>
                 </div>
@@ -17,7 +17,7 @@
                             {{ csrf_field() }}
 
                             <input type="hidden" name="status" value="draft" />
-                            <button class="button {{ $build->status == 'draft' ? 'is-static' : 'is-danger' }} is-outlined" type="submit">Draft</button>
+                            <button class="button {{ $build->status == 'draft' ? 'is-static' : 'is-draft' }}" type="submit">Draft</button>
                         </form>
                     </div>
                     <div class="level-item">
@@ -25,14 +25,14 @@
                             {{ csrf_field() }}
 
                             <input type="hidden" name="status" value="private" />
-                            <button class="button {{ $build->status == 'private' ? 'is-static' : 'is-danger' }} is-outlined" type="submit">Private</button>
+                            <button class="button {{ $build->status == 'private' ? 'is-static' : 'is-private' }}" type="submit">Private</button>
                         </form>
                     </div>
                     <div class="level-item">
                         <form method="post" action="/modpacks/{{ $build->modpack->slug }}/{{ $build->version }}">
                             {{ csrf_field() }}
 
-                            <button class="button {{ $build->status == 'public' ? 'is-static' : 'is-danger' }} is-outlined" type="submit">Public</button>
+                            <button class="button {{ $build->status == 'public' ? 'is-static' : 'is-public' }}" type="submit">Public</button>
                             <input type="hidden" name="status" value="public" />
                         </form>
                     </div>
@@ -43,7 +43,7 @@
                     <div class="level-item">
                         <div class="content">
                             <strong>Change build version</strong><br />
-                            The build version is used as the public key.
+                            <small>The build version is used as the public key.</small>
                         </div>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
                                     @endif
                                 </div>
                                 <div class="control">
-                                    <button type="submit" class="button is-danger is-outlined">
+                                    <button type="submit" class="button is-danger">
                                         Change
                                     </button>
                                 </div>
@@ -74,7 +74,7 @@
                     <div class="level-item">
                         <div class="content">
                             <strong>Delete this build</strong><br />
-                            Once you delete a build, there is no going back. Please be certain.
+                            <small>Once you delete a build, there is no going back. Please be certain.</small>
                         </div>
                     </div>
                 </div>
@@ -83,7 +83,7 @@
                         <form method="post" action="/modpacks/{{ $build->modpack->slug }}/{{ $build->version }}">
                             {{ csrf_field() }}
                             {{ method_field('delete') }}
-                            <button class="button is-danger is-outlined" type="submit">Delete this build</button>
+                            <button class="button is-danger" type="submit">Delete this build</button>
                         </form>
                     </div>
                 </div>

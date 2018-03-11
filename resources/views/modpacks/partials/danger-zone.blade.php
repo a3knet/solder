@@ -8,7 +8,7 @@
                         <div class="level-item">
                             <div class="content">
                                 <strong>Make this modpack public</strong><br />
-                                Make this modpack visible to anyone.
+                                <small>Make this modpack visible to anyone.</small>
                             </div>
                         </div>
                     </div>
@@ -19,7 +19,7 @@
                                 {{ method_field('patch') }}
 
                                 <input type="hidden" name="status" value="public" />
-                                <button class="button is-danger is-outlined" type="submit">Make public</button>
+                                <button class="button is-public" type="submit">Make public</button>
                             </form>
                         </div>
                     </div>
@@ -31,7 +31,7 @@
                         <div class="level-item">
                             <div class="content">
                                 <strong>Make this modpack private</strong><br />
-                                Hide this modpack from the public.
+                                <small>Hide this modpack from the public.</small>
                             </div>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                                 {{ method_field('patch') }}
 
                                 <input type="hidden" name="status" value="private" />
-                                <button class="button is-danger is-outlined" type="submit">Make private</button>
+                                <button class="button is-private" type="submit">Make private</button>
                             </form>
                         </div>
                     </div>
@@ -53,7 +53,7 @@
                     <div class="level-item">
                         <div class="content">
                             <strong>Change modpack slug</strong><br />
-                            The modpack slug is used as the public key.
+                            <small>The modpack slug is used as the public key.</small>
                         </div>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                                     @endif
                                 </div>
                                 <div class="control">
-                                    <button type="submit" class="button is-danger is-outlined">
+                                    <button type="submit" class="button is-danger">
                                         Change
                                     </button>
                                 </div>
@@ -85,7 +85,7 @@
                     <div class="level-item">
                         <div class="content">
                             <strong>Delete this modpack</strong><br />
-                            Once you delete a modpack, there is no going back. Please be certain.
+                            <small>Once you delete a modpack, there is no going back. Please be certain.</small>
                         </div>
                     </div>
                 </div>
@@ -94,7 +94,7 @@
                         <form method="post" action="/modpacks/{{ $modpack->slug }}">
                             {{ csrf_field() }}
                             {{ method_field('delete') }}
-                            <button class="button is-danger is-outlined" type="submit">Delete this modpack</button>
+                            <button class="button is-danger" type="submit">Delete this modpack</button>
                         </form>
                     </div>
                 </div>
