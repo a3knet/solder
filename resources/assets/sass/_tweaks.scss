@@ -7,6 +7,10 @@ p.code {
   }
 }
 
+div.full-height {
+    min-height: 100vh;
+}
+
 // Make the Bulma box element act more like a Bootstrap panel (I know, blasphemous)
 // We now have bootstrap... disable
 /*.box {
