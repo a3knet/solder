@@ -8,7 +8,7 @@
     <title>Solder - Login</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
     <script>
         window.Laravel = <?php echo json_encode([
@@ -53,7 +53,7 @@
                     </div>
                 @endif
 
-                <form method="post" action="/login">
+                <form method="post" action="login">
                     {{ csrf_field() }}
 
                     <div class="field">

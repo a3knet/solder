@@ -1,15 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Solder')</title>
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
+    <!-- Styles -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    dd
 
+    <!-- @TODO really needed? -->
     <script>
         window.Laravel = <?php echo json_encode([
             'csrfToken' => csrf_token(),
@@ -17,49 +23,52 @@
     </script>
 </head>
 <body>
+<div id="app">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url('/') }}">
+                {{ config('app.name', 'Laravel') }}
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-    <div id="app" class="columns is-gapless full-height">
-        <div class="column is-narrow has-background-dark has-text-grey-light">
-            @include('partials.directory')
-        </div>
-
-        @if (View::hasSection('menu'))
-            <div class="column is-one-quarter is-2-fullhd has-background-primary">
-                @yield('menu')
-            </div>
-        @endif
-
-        <div class="column has-background-light">
-            <div class="container">
-                @include('partials.navigation')
-
-                @yield('content')
-            </div>
-
-            <footer class="footer">
-                <div class="container">
-                    <div class="content has-text-centered">
-                        <p class="has-text-grey">
-                            Made with
-                            <a href="http://patreon.com/indemnity83">
-                                <i title="love" class="fa fa-heart" aria-hidden="true"></i>
-                                <span class="sr-only">love</span>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                <ul class="navbar-nav">
+                    @if (Auth::guest())
+                        <li class="nav-item"><a href="{{ route('login') }}" class="nav-link">Login</a></li>
+                        <li class="nav-item"><a href="{{ route('register') }}" class="nav-link">Register</a></li>
+                    @else
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                {{ Auth::user()->name }}
                             </a>
-                            &amp;
-                            <a href="http://ko-fi.com/solder">
-                                <i title="coffee" class="fa fa-coffee" aria-hidden="true"></i>
-                                <span class="sr-only">coffee</span>
-                            </a>
-                            in
-                            <a class="has-text-grey" href="https://www.google.com/maps/place/Yuba%20City,CA">Yuba City CA.</a>
-                        </p>
-                    </div>
-                </div>
-            </footer>
-        </div>
-    </div>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                <a href="{{ route('logout') }}" class="dropdown-item"
+                                   onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                    Logout
+                                </a>
 
-    <script src="/js/app.js"></script>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                      style="display: none;">
+                                    {{ csrf_field() }}
+                                </form>
+                            </div>
+                        </li>
+                    @endif
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+
+    @yield('content')
+</div>
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     @stack('afterScripts')
 </body>
