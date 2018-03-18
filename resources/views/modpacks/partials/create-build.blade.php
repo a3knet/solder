@@ -1,7 +1,9 @@
-<div class="box">
-    <h1>Add Build</h1>
-    <div class="box-body">
-        <form method="post" action="/modpacks/{{ $modpack->slug }}/builds">
+<div class="card solder-card">
+    <div class="card-header">
+        Add Build
+    </div>
+    <div class="card-body">
+        <form method="post" action="{{ route('modpacks.builds.store', ['modpack' => $modpack->slug]) }}">
             {{ csrf_field() }}
 
             <div class="field is-horizontal">

@@ -1,45 +1,46 @@
-.menu.is-dark {
-
-  .menu-list {
-    a {
-      color: rgba(255, 255, 255, 0.5);
-
-      &:hover {
-        background: $dark;
-        color: $light;
-      }
-
-      &.is-active {
-        background: $dark;
-        color: $light;
-      }
-    }
-  }
-
-  .menu-label {
-    color: rgba(255, 255, 255, 0.4);
-  }
-
+/* Top menu */
+.top-menu {
+  background-color: #163f69;
+  padding-top: .2rem;
+  padding-bottom: .2rem;
 }
 
+.top-menu li>a {
+  color: #fff;
+}
 
+.top-menu a.logo{
+  line-height: 1.0;
+  padding-top: 0.2rem;
+  padding-bottom: 0;
+  margin-right: 0.4rem;
+}
 
-.menu {
-  .menu-label {
-    font-weight: bold;
-  }
+.top-menu .logo-text{
+  color: #fff;
+  font-weight: bold;
+  margin-right: 1.0rem;
+}
 
-  .menu-list a {
-    .icon {
-      color: $grey-light
-    }
+.top-menu a.nav-link {
+  padding-top: .3rem;
+  padding-bottom: .3rem;
+}
 
-    &.is-active .icon {
-      color: $menu-item-active-color;
-    }
+/* Sidebar */
+.sidebar {
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 1.0rem;
+  position: fixed;
+  background-color: #f7f7f7;
+  top: 2.4rem;
+  bottom: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-right: 1px solid #eee;
+}
 
-    &:hover .icon {
-      color: $menu-item-hover-color;
-    }
-  }
+.sidebar .nav-link {
+  border-radius: 0;
 }

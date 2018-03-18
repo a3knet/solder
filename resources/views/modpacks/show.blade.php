@@ -1,43 +1,50 @@
 @extends('layouts.app')
 
 @section('content')
-    <assistant id="modpacks" v-cloak>
-        Modpacks are made up of multiple versions, called 'builds'. Builds
-        help you organize changes and upgrades to your modpack without
-        breaking players worlds. A build is what the launcher will download
-        and run, so it needs to have a unique version number and the version
-        of Minecraft you want launched.
-    </assistant>
+    <div class="row">
+        <nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
+            <ul class="nav nav-pills flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Settings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Builds</a>
+                </li>
+            </ul>
+        </nav>
+        <div class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
+            <assistant id="modpacks" v-cloak>
+                Modpacks are made up of multiple versions, called 'builds'. Builds
+                help you organize changes and upgrades to your modpack without
+                breaking players worlds. A build is what the launcher will download
+                and run, so it needs to have a unique version number and the version
+                of Minecraft you want launched.
+            </assistant>
+            <h1 class="title">Modpack: {{ $modpack->slug }}</h1>
 
-    <section class="section">
-        <div class="level has-text-capitalized is-size-6">
-            <div class="level-left"></div>
-            <div class="level-right">
-                <div class="level-item has-padding-right-3">
-                    <p class="menu-label">{{ $modpack->slug }}</p>
-                </div>
-                <div class="level-item">
-                    <p class="menu-label">{{ $modpack->status }}
-                    <span class="icon has-text-{{ $modpack->status }}">
-                      <i class="fa fa-circle"></i>
-                    </span>
-                    </p>
-                </div>
+            <div class="pull-right">
+                Status: <span class="badge badge-{{ $modpack->status }}">{{ $modpack->status }}</span>
             </div>
+
+            <tabs>
+                <tab icon="fa-wrench" name="General" selected="true">
+                    @can('update', $modpack)
+                        @include('modpacks.partials.update-modpack')
+                        @include('modpacks.partials.danger-zone')
+                    @endcan
+                </tab>
+                <tab icon="fa-cogs" name="Builds">
+                    @can('update', $modpack)
+                        @include('modpacks.partials.create-build')
+                    @endcan
+                    @includeWhen(count($modpack->builds), 'modpacks.partials.list-builds')
+                </tab>
+                <tab icon="fa-users" name="Collaborators">
+                    @include('modpacks.partials.add-collaborators')
+                    @includeWhen(count($modpack->collaborators), 'modpacks.partials.list-collaborators')
+                </tab>
+            </tabs>
+
         </div>
-
-        @can('update', $modpack)
-            @include('modpacks.partials.create-build')
-        @endcan
-
-        @includeWhen(count($modpack->builds), 'modpacks.partials.list-builds')
-        @include('modpacks.partials.add-collaborators')
-        @includeWhen(count($modpack->collaborators), 'modpacks.partials.list-collaborators')
-
-        @can('update', $modpack)
-            @include('modpacks.partials.update-modpack')
-            @include('modpacks.partials.danger-zone')
-        @endcan
-
-    </section>
+    </div>
 @endsection

@@ -1,6 +1,8 @@
-<div class="box">
-    <h1>Collaborators</h1>
-    <div class="box-body">
+<div class="card solder-card">
+    <div class="card-header">
+        Collaborators
+    </div>
+    <div class="card-body">
         <ul class="list-group">
             @foreach($modpack->collaborators as $collaborator)
                 <li class="level list-group-item">

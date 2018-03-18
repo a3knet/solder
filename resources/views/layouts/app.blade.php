@@ -23,21 +23,11 @@
 </head>
 <body>
 <div id="app">
+    @include('partials.navigation')
     
-    <div class="row">
-        <div class="col-1 pl-0 bg-primary">
-            @include('partials.directory')
-        </div>
-        <div class="col-11 pl-0">
-            @include('partials.navigation')
-    
-            <div class="container">             
+    <div class="container-fluid">
                 @yield('content')
-            </div>
-       </div>
     </div>
-    
-</div>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>

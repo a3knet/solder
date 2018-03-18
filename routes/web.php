@@ -14,23 +14,23 @@ Route::post('/login', 'Auth\LoginController@login')->name('auth.login');
 Route::post('/logout', 'Auth\LoginController@logout')->name('auth.logout');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', 'DashboardController');
+    Route::get('/', 'DashboardController')->name('dashboard.show');
 
-    Route::get('/modpacks/{modpack}', 'ModpacksController@show');
-    Route::post('/modpacks', 'ModpacksController@store');
-    Route::patch('/modpacks/{modpack}', 'ModpacksController@update');
+    Route::get('/modpacks/{modpack}', 'ModpacksController@show')->name('modpacks.show');
+    Route::post('/modpacks', 'ModpacksController@store')->name('modpacks.store');
+    Route::patch('/modpacks/{modpack}', 'ModpacksController@update')->name('modpacks.update');
     Route::delete('/modpacks/{modpack}', 'ModpacksController@destroy');
 
     Route::post('/modpacks/{modpack}/collaborators', 'ModpackCollaboratorsController@store');
 
     Route::delete('/collaborators/{collaborator}', 'CollaboratorsController@destroy');
 
-    Route::get('/modpacks/{modpack}/{build}', 'ModpackBuildsController@show');
-    Route::post('/modpacks/{modpack}/builds', 'ModpackBuildsController@store');
+    Route::get('/modpacks/{modpack}/{build}', 'ModpackBuildsController@show')->name('modpacks.builds.show');
+    Route::post('/modpacks/{modpack}/builds', 'ModpackBuildsController@store')->name('modpacks.builds.store');
     Route::post('/modpacks/{modpack}/{build}', 'ModpackBuildsController@update');
     Route::delete('/modpacks/{modpack}/{build}', 'ModpackBuildsController@destroy');
 
-    Route::get('/library', 'PackagesController@index');
+    Route::get('/library', 'PackagesController@index')->name('library.list');
     Route::get('/library/{package}', 'PackagesController@show');
     Route::post('/library', 'PackagesController@store');
     Route::patch('/library/{package}', 'PackagesController@update');
@@ -45,9 +45,9 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->namespace('Admin')->prefix('settings')->group(function () {
-    Route::view('about', 'settings.about');
+    Route::view('about', 'settings.about.show');
 
-    Route::view('api', 'settings.api');
+    Route::view('api', 'settings.api')->name('settings.api.show');
 
     Route::get('permissions', 'PermissionsController@index');
     Route::post('permissions', 'PermissionsController@update');

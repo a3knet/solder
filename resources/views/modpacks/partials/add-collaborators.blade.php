@@ -1,6 +1,8 @@
-<div class="box">
-    <h1>Add Collaborator</h1>
-    <div class="box-body">
+<div class="card solder-card">
+    <div class="card-header">
+        Add Collaborator
+    </div>
+    <div class="card-body">
         <form action="/modpacks/{{ $modpack->slug }}/collaborators" method="post">
             {{ csrf_field() }}
 

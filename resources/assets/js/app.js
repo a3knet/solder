@@ -20,6 +20,8 @@ Vue.component('release-table', require('./components/ReleaseTable.vue'));
 Vue.component('build-table', require('./components/BuildTable.vue'));
 Vue.component('passport-personal-access-tokens', require('./components/PersonalAccessTokens.vue'));
 Vue.component('assistant', require('./components/Assistant'));
+Vue.component('tabs', require('./components/Tabs.vue'));
+Vue.component('tab', require('./components/Tab.vue'));
 
 Vue.filter('prettyBytes', function (num) {
     // jacked from: https://github.com/sindresorhus/pretty-bytes
