@@ -19,7 +19,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/modpacks/{modpack}', 'ModpacksController@show')->name('modpacks.show');
     Route::post('/modpacks', 'ModpacksController@store')->name('modpacks.store');
     Route::patch('/modpacks/{modpack}', 'ModpacksController@update')->name('modpacks.update');
-    Route::delete('/modpacks/{modpack}', 'ModpacksController@destroy');
+    Route::delete('/modpacks/{modpack}', 'ModpacksController@destroy')->name('modpacks.destroy');
 
     Route::post('/modpacks/{modpack}/collaborators', 'ModpackCollaboratorsController@store')->name('modpacks.collaborators.store');
 
@@ -27,7 +27,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/modpacks/{modpack}/{build}', 'ModpackBuildsController@show')->name('modpacks.builds.show');
     Route::post('/modpacks/{modpack}/builds', 'ModpackBuildsController@store')->name('modpacks.builds.store');
-    Route::post('/modpacks/{modpack}/{build}', 'ModpackBuildsController@update');
+    Route::post('/modpacks/{modpack}/{build}', 'ModpackBuildsController@update')->name('modpacks.builds.update');
     Route::delete('/modpacks/{modpack}/{build}', 'ModpackBuildsController@destroy')->name('modpacks.builds.destroy');
 
     Route::get('/library', 'PackagesController@index')->name('library.list');

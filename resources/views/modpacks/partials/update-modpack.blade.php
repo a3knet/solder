@@ -16,10 +16,10 @@
             </div>
 
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label" for="modpack-name">Icon</label>
+                <label class="col-sm-2 col-form-label" for="modpack-modpack_icon">Icon</label>
                 <div class="col-sm-10">
                     <div class="input-group">
-                        <input type="file" class="{{ $errors->has('modpack_icon') ? 'is-invalid' : '' }}" id="modpack_icon" name="modpack_icon" />
+                        <input type="file" class="{{ $errors->has('modpack_icon') ? 'is-invalid' : '' }}" id="modpack-modpack_icon" name="modpack_icon" />
                     </div>
                     <small id="iconHelpBlock" class="form-text text-muted">
                         Icon should be square and at least 50px wide.

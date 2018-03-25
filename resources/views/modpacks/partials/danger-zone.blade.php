@@ -69,7 +69,7 @@
                     <small>Once you delete a modpack, there is no going back. Please be certain.</small>
                 </div>
                 <div class="col-sm-4">
-                    <form class="pull-right" method="post" action="{{ route('modpacks.update', ['modpacks' => $modpack->slug]) }}">
+                    <form class="pull-right" method="post" action="{{ route('modpacks.destroy', ['modpacks' => $modpack->slug]) }}">
                         {{ csrf_field() }}
                         {{ method_field('delete') }}
                         <button class="btn btn-danger" type="submit">Delete this modpack</button>

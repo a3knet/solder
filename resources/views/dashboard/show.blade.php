@@ -7,12 +7,10 @@
         form below to create your first modpack.
     </assistant>
 
-    <section class="section">
-        @can('create', App\Modpack::class)
-            @include('dashboard.partials.create-modpack')
-        @endcan
+    @can('create', App\Modpack::class)
+        @include('dashboard.partials.create-modpack')
+    @endcan
 
-        @includeWhen(count($builds), 'dashboard.partials.recent-builds')
-        @includeWhen(count($releases), 'dashboard.partials.recent-releases')
-    </section>
+    @includeWhen(count($builds), 'dashboard.partials.recent-builds')
+    @includeWhen(count($releases), 'dashboard.partials.recent-releases')
 @endsection
