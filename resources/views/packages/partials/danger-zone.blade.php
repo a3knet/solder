@@ -1,58 +1,43 @@
-<div class="box is-danger">
-    <h1>Danger Zone</h1>
-    <div class="box-body">
+<b-card header="Danger Zone" class="solder-card">
         <ul class="list-group">
-            <li class="level list-group-item">
-                <div class="level-left">
-                    <div class="level-item">
-                        <div class="content">
-                            <strong>Change package slug</strong><br />
-                            The package slug is used as the public key.
-                        </div>
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <strong>Change package slug</strong><br />
+                        <small>The package slug is used as the public key.</small>
                     </div>
-                </div>
-                <div class="level-right">
-                    <div class="level-item">
-                        <form method="post" action="/library/{{ $package->slug }}">
+                    <div class="col-sm-4">
+                        <form class="form-inline pull-right" method="post" action="{{ route('library.update', ['package' => $package->slug]) }}">
                             {{ csrf_field() }}
                             {{ method_field('patch') }}
 
-                            <div class="field has-addons">
-                                <div class="control">
-                                    <input class="input is-danger" name="slug" type="text" value="{{ old('slug', $package->slug) }}">
-                                    @if($errors->has('slug'))
-                                        <p class="help is-danger">{{ $errors->first('slug') }}</p>
-                                    @endif
+                            <input class="form-control" name="slug" type="text" value="{{ old('slug', $package->slug) }}" />
+                            @if($errors->has('slug'))
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('slug') }}
                                 </div>
-                                <div class="control">
-                                    <button type="submit" class="button is-danger is-outlined">
-                                        Change
-                                    </button>
-                                </div>
-                            </div>
+                            @endif
+                            <button type="submit" class="btn btn-danger">
+                                Change
+                            </button>
                         </form>
                     </div>
                 </div>
             </li>
-            <li class="level list-group-item">
-                <div class="level-left">
-                    <div class="level-item">
-                        <div class="content">
-                            <strong>Delete this package</strong><br />
-                            Once you delete a package, there is no going back. Please be certain.
-                        </div>
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <strong>Delete this package</strong><br />
+                        <small>Once you delete a package, there is no going back. Please be certain.</small>
                     </div>
-                </div>
-                <div class="level-right">
-                    <div class="level-item">
-                        <form method="post" action="/library/{{ $package->slug }}">
+                    <div class="col-sm-4">
+                        <form class="pull-right" method="post" action="{{ route('library.destroy', ['package' => $package->slug]) }}">
                             {{ csrf_field() }}
                             {{ method_field('delete') }}
-                            <button class="button is-danger is-outlined" type="submit">Delete this package</button>
+                            <button class="btn btn-danger" type="submit">Delete this package</button>
                         </form>
                     </div>
                 </div>
             </li>
         </ul>
-    </div>
-</div>
+</b-card>

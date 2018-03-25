@@ -8,65 +8,38 @@
         packages listed, you probably need to go to your
         <a href="/library">Library</a> and create some.
     </assistant>
+    <h1 class="title">
+        Build: {{ $build->version }}
+        <a href="{{ route('modpacks.show', ['modpack' => $build->modpack->slug]) }}">
+            <small>(Modpack: {{ $build->modpack->slug }})</small>
+        </a>
+    </h1>
 
-    <section class="section">
-        <div class="level has-text-capitalized is-size-6">
-            <div class="level-left"></div>
-            <div class="level-right">
-                <div class="level-item has-padding-right-3">
-                    <a href="/modpacks/{{ $build->modpack->slug }}" class="menu-label">
-                        <figure class="icon">
-                            <i class="fa fa-fw fa-arrow-left"></i>
-                        </figure>
-                        {{ $build->modpack->slug }}
-                    </a>
-                </div>
-                <div class="level-item has-padding-right-3">
-                    <p class="menu-label">v{{ $build->version }}</p>
-                </div>
-                <div class="level-item has-padding-right-3">
-                    <p class="menu-label">MC {{ $build->minecraft_version }}</p>
-                </div>
-                @if($build->forge_version != null)
-                <div class="level-item has-padding-right-3">
-                    <p class="menu-label">Forge {{ $build->forge_version }}</p>
-                </div>
-                @endif
-                @if($build->java_version != null)
-                    <div class="level-item has-padding-right-3">
-                    <p class="menu-label">Java {{ $build->java_version }}</p>
-                </div>
-                @endif
-                @if($build->required_memory > 0)
-                <div class="level-item has-padding-right-3">
-                    <p class="menu-label">Mem {{ $build->required_memory }}</p>
-                </div>
-                @endif
-                <div class="level-item">
-                    <p class="menu-label">{{ $build->status }}
-                    <span class="icon has-text-{{ $build->status }}">
-                      <i class="fa fa-circle"></i>
-                    </span>
-                    </p>
-                </div>
-            </div>
-        </div>
+    <div class="pull-right">
+        Status: <span class="badge badge-{{ $build->status }}">{{ $build->status }}</span>
+    </div>
 
-        <div class="box">
-            <h1>Bundle</h1>
-            <div class="box-body">
-                <release-picker build_id="{{ $build->id }}" />
-            </div>
-        </div>
+    <b-tabs>
+        <b-tab active>
+            <template slot="title">
+                <span class="icon"><i class="fa fa-wrench"></i></span>General
+            </template>
+            @include('builds.partials.update-build')
+            @include('builds.partials.danger-zone')
+        </b-tab>
+        <b-tab>
+            <template slot="title">
+                <span class="icon"><i class="fa fa-cogs"></i></span>Bundle
+            </template>
+            <b-card header="Bundle" class="solder-card">
+                    <release-picker build_id="{{ $build->id }}" />
+            </b-card>
 
-        @if(count($build->releases))
-        <div class="box">
-            <h1>Bundled Releases</h1>
-            <build-table :releases='{{ json_encode($build->releases) }}'></build-table>
-        </div>
-        @endif
-        
-        @include('builds.partials.update-build')
-        @include('builds.partials.danger-zone')
-    </section>
+            @if(count($build->releases))
+                <b-card header="Bundled Releases" class="solder-card">
+                    <build-table :releases='{{ json_encode($build->releases) }}'></build-table>
+                </b-card>
+            @endif
+        </b-tab>
+    </b-tabs>
 @endsection

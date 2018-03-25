@@ -21,24 +21,24 @@ Route::middleware('auth')->group(function () {
     Route::patch('/modpacks/{modpack}', 'ModpacksController@update')->name('modpacks.update');
     Route::delete('/modpacks/{modpack}', 'ModpacksController@destroy');
 
-    Route::post('/modpacks/{modpack}/collaborators', 'ModpackCollaboratorsController@store');
+    Route::post('/modpacks/{modpack}/collaborators', 'ModpackCollaboratorsController@store')->name('modpacks.collaborators.store');
 
-    Route::delete('/collaborators/{collaborator}', 'CollaboratorsController@destroy');
+    Route::delete('/collaborators/{collaborator}', 'CollaboratorsController@destroy')->name('collaborators.destroy');
 
     Route::get('/modpacks/{modpack}/{build}', 'ModpackBuildsController@show')->name('modpacks.builds.show');
     Route::post('/modpacks/{modpack}/builds', 'ModpackBuildsController@store')->name('modpacks.builds.store');
     Route::post('/modpacks/{modpack}/{build}', 'ModpackBuildsController@update');
-    Route::delete('/modpacks/{modpack}/{build}', 'ModpackBuildsController@destroy');
+    Route::delete('/modpacks/{modpack}/{build}', 'ModpackBuildsController@destroy')->name('modpacks.builds.destroy');
 
     Route::get('/library', 'PackagesController@index')->name('library.list');
-    Route::get('/library/{package}', 'PackagesController@show');
-    Route::post('/library', 'PackagesController@store');
-    Route::patch('/library/{package}', 'PackagesController@update');
-    Route::delete('/library/{package}', 'PackagesController@destroy');
+    Route::get('/library/{package}', 'PackagesController@show')->name('library.show');
+    Route::post('/library', 'PackagesController@store')->name('library.store');
+    Route::patch('/library/{package}', 'PackagesController@update')->name('library.update');
+    Route::delete('/library/{package}', 'PackagesController@destroy')->name('library.destroy');
 
-    Route::post('/library/{package}/releases', 'PackageReleasesController@store');
+    Route::post('/library/{package}/releases', 'PackageReleasesController@store')->name('library.releases.store');
 
-    Route::delete('/releases/{release}', 'ReleasesController@destroy');
+    Route::delete('/releases/{release}', 'ReleasesController@destroy')->name('releases.destroy');
 
     Route::delete('/bundles', 'BundlesController@destroy');
     Route::post('/bundles', 'BundlesController@store');

@@ -1,73 +1,49 @@
-<div class="box">
-    <h1>Add Release</h1>
-    <div class="box-body">
-        <form action="/library/{{ $package->slug }}/releases" method="post" enctype="multipart/form-data">
+<b-card header="Add Release" class="solder-card">
+        <form action="{{ route('library.releases.store', ['package' => $package->slug]) }}" method="post" enctype="multipart/form-data">
             {{ csrf_field() }}
 
-            <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                    <label class="label">Version</label>
-                </div>
-                <div class="field-body">
-                    <div class="field">
-                        <div class="control has-icons-left is-expanded">
-                            <input class="input {{ $errors->has('version') ? 'is-danger' : '' }}" type="text" placeholder="1.2.3" name="version" value="{{ old('version') }}">
-                            <span class="icon is-small is-left">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="package-release-version">Version</label>
+                <div class="col-sm-10">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-white border-right-0">
                                 <i class="fa fa-code-fork"></i>
                             </span>
-                            @if($errors->has('version'))
-                                <p class="help is-danger">{{ $errors->first('version') }}</p>
-                            @endif
                         </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                    <label class="label">File</label>
-                </div>
-                <div class="field-body">
-                    <div class="field">
-                        <div class="control">
-                            <div class="columns">
-                                <div class="column is-narrow">
-                                    <div class="file {{ $errors->has('archive') ? 'is-danger' : '' }}">
-                                        <label class="file-label">
-                                            <input class="file-input" type="file" name="archive">
-                                            <span class="file-cta">
-                                                        <span class="file-icon">
-                                                            <i class="fa fa-upload"></i>
-                                                        </span>
-                                                        <span class="file-label">
-                                                            Choose a file…
-                                                        </span>
-                                                    </span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="column is-flex" style="align-items: center;">
-                                    @if($errors->has('archive'))
-                                        <p class="is-size-7 has-text-danger">{{ $errors->first('archive') }}</p>
-                                    @endif
-                                </div>
+                        <input class="form-control border-left-0 {{ $errors->has('version') ? 'is-invalid' : '' }}" id="package-release-version" name="version" placeholder="1.2.3" value="{{ old('version') }}" />
+                        @if($errors->has('version'))
+                            <div class="invalid-feedback">
+                                {{ $errors->first('version') }}
                             </div>
-                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
 
-            <div class="field is-horizontal">
-                <div class="field-label">
-                    &nbsp;
-                </div>
-                <div class="field-body">
-                    <div class="control">
-                        <button class="button is-primary" type="submit">Add Release</button>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="package-release-archive">File</label>
+                <div class="col-sm-10">
+                    <div class="input-group">
+                        <input type="file" class="{{ $errors->has('modpack_icon') ? 'is-invalid' : '' }}" id="package-release-archive" name="archive" />
                     </div>
+                    <small id="archiveHelpBlock" class="form-text text-muted">
+                        <span class="icon">
+                            <i class="fa fa-upload"></i>
+                        </span>Choose a file archive (zip).
+                    </small>
+                    @if($errors->has('archive'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('archive') }}
+                        </div>
+                    @endif
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-10 offset-sm-2">
+                    <button type="submit" class="btn btn-primary">Add Release</button>
                 </div>
             </div>
         </form>
-    </div>
-</div>
+</b-card>

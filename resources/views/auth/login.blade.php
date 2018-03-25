@@ -25,7 +25,7 @@
     <div id="app" class="card text-center text-white bg-primary full-height">
         <div class="card-body pt-0">
             <div class="row d-flex align-items-center h-100">
-                <div class="col-md-3 offset-md-5">
+                <div class="col-lg-2 offset-lg-5 col-md-4 offset-md-4">
             <form method="post" action="{{ route('auth.login') }}" class="">
             <figure class="figure brand-image">
                     <svg class="figure-img img-fluid" viewBox="0 0 100 100" fill="whitesmoke">

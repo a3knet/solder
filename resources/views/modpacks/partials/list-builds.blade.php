@@ -1,83 +1,75 @@
-<div class="card solder-card">
-    <div class="card-header">
-        Builds
-    </div>
-    <div class="card-body">
-        <table class="table is-fullwidth">
-            <thead>
+<b-card header="Builds" class="solder-card">
+    <table class="table w-100">
+        <thead>
+        <tr>
+            <th>Build</th>
+            <th>Minecraft</th>
+            <th>Forge</th>
+            <th>Java</th>
+            <th>Memory</th>
+            <th class="text-center w-1">Promoted</th>
+            <th class="text-center w-1">Latest</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach($modpack->builds as $build)
             <tr>
-                <th>Build</th>
-                <th>Minecraft</th>
-                <th>Forge</th>
-                <th>Java</th>
-                <th>Memory</th>
-                <th class="has-text-centered">Promoted</th>
-                <th class="has-text-centered">Latest</th>
-                <th></th>
+                <td>
+                    <a href="{{ route('modpacks.builds.show', ['modpack' => $modpack->slug, 'build' => $build->version]) }}">
+                        <strong>{{ $build->version }}</strong>
+                        @if($build->status != 'public')
+                            <span class="badge badge-{{ $build->status }}">{{ $build->status }}</span>
+                        @endif()
+                    </a>
+                </td>
+                <td>{{ $build->minecraft_version }}</td>
+                <td>{{ $build->forge_version }}</td>
+                <td>{{ $build->java_version }}</td>
+                <td>{{ $build->required_memory }}</td>
+                <td class="text-center w-1">
+                    <form method="post" action="{{ route('modpacks.update', ['modpack' => $modpack->slug]) }}">
+                        {{ csrf_field() }}
+                        {{ method_field('patch') }}
+                        <input type="hidden" name="recommended_build_id" value="{{ $build->id }}" />
+
+                        @if($build->id == $modpack->recommended_build_id)
+                            <button class="btn btn-sm btn-success" type="submit">
+                                <i class="fa fa-fw fa-heart"></i>
+                            </button>
+                        @else
+                            <button class="btn btn-sm" type="submit">
+                                <i class="fa fa-fw fa-heart-o"></i>
+                            </button>
+                        @endif
+                    </form>
+                </td>
+                <td class="text-center w-1">
+                    <form method="post" action="{{ route('modpacks.update', ['modpack' => $modpack->slug]) }}">
+                        {{ csrf_field() }}
+                        {{ method_field('patch') }}
+                        <input type="hidden" name="latest_build_id" value="{{ $build->id }}" />
+
+                        @if($build->id == $modpack->latest_build_id)
+                            <button class="btn btn-sm btn-success" type="submit">
+                                <i class="fa fa-fw fa-star"></i>
+                            </button>
+                        @else
+                            <button class="btn btn-sm" type="submit">
+                                <i class="fa fa-fw fa-star-o"></i>
+                            </button>
+                        @endif
+                    </form>
+                </td>
+                <td class="text-right">
+                    <form method="post" action="{{ route('modpacks.builds.destroy', ['modpack' => $modpack->slug, 'build' => $build->version]) }}">
+                        {{ csrf_field() }}
+                        {{ method_field('delete') }}
+                        <button class="btn btn-danger btn-small">Delete</button>
+                    </form>
+                </td>
             </tr>
-            </thead>
-            <tbody>
-            @foreach($modpack->builds as $build)
-                <tr>
-                    <td>
-                        <a href="/modpacks/{{ $modpack->slug }}/{{ $build->version }}">
-                            <strong>{{ $build->version }}</strong>
-                            @if($build->status == 'private')
-                                <span class="tag">private</span>
-                            @endif()
-                            @if($build->status == 'draft')
-                                <span class="tag">draft</span>
-                            @endif()
-                        </a>
-                    </td>
-                    <td>{{ $build->minecraft_version }}</td>
-                    <td>{{ $build->forge_version }}</td>
-                    <td>{{ $build->java_version }}</td>
-                    <td>{{ $build->required_memory }}</td>
-                    <td class="has-text-centered is-narrow">
-                        <form method="post" action="/modpacks/{{ $modpack->slug }}">
-                            {{ csrf_field() }}
-                            {{ method_field('patch') }}
-                            <input type="hidden" name="recommended_build_id" value="{{ $build->id }}" />
-
-                            @if($build->id == $modpack->recommended_build_id)
-                                <button class="button is-small is-success" type="submit">
-                                    <i class="fa fa-fw fa-heart"></i>
-                                </button>
-                            @else
-                                <button class="button is-small" type="submit">
-                                    <i class="fa fa-fw fa-heart-o"></i>
-                                </button>
-                            @endif
-                        </form>
-                    </td>
-                    <td class="has-text-centered is-narrow">
-                        <form method="post" action="/modpacks/{{ $modpack->slug }}">
-                            {{ csrf_field() }}
-                            {{ method_field('patch') }}
-                            <input type="hidden" name="latest_build_id" value="{{ $build->id }}" />
-
-                            @if($build->id == $modpack->latest_build_id)
-                                <button class="button is-small is-success" type="submit">
-                                    <i class="fa fa-fw fa-star"></i>
-                                </button>
-                            @else
-                                <button class="button is-small" type="submit">
-                                    <i class="fa fa-fw fa-star-o"></i>
-                                </button>
-                            @endif
-                        </form>
-                    </td>
-                    <td class="has-text-right">
-                        <form method="post" action="/modpacks/{{ $modpack->slug }}/{{ $build->version }}">
-                            {{ csrf_field() }}
-                            {{ method_field('delete') }}
-                            <button class="button is-danger is-small is-outlined">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
-    </div>
-</div>
+        @endforeach
+        </tbody>
+    </table>
+</b-card>

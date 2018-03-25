@@ -8,13 +8,13 @@
         together before you can start uploading files.
     </assistant>
 
-    <section class="section">
-        @can('create', App\Package::class)
-            @include('packages.partials.create-package')
-        @endcan
+    <h1 class="title">Library</h1>
 
-        @if(count($packages))
-            @include('packages.partials.list-packages')
-        @endif
-    </section>
+    @can('create', App\Package::class)
+        @include('packages.partials.create-package')
+    @endcan
+
+    @if(count($packages))
+        @include('packages.partials.list-packages')
+    @endif
 @endsection
