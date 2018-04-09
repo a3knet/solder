@@ -1,5 +1,5 @@
 <b-card header="Build Settings" class="solder-card">
-        <form method="post" action="{{ route('modpacks.builds.store', ['modpack' => $build->modpack->slug, 'build' => $build->version]) }}" enctype="multipart/form-data">
+        <form method="post" action="{{ route('modpacks.builds.update', ['modpack' => $build->modpack->slug, 'build' => $build->version]) }}" enctype="multipart/form-data">
             {{ csrf_field() }}
 
             <div class="form-group row">
