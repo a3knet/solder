@@ -13,9 +13,32 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\User;
 
 class LoginController extends Controller
 {
+    /**
+    +     * Show the login page.
+    +     *
+    +     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+    +     */
+    public function show()
+    {
+
+        if (isset($_SERVER['REMOTE_USER'])) {
+            $username = $_SERVER['REMOTE_USER'];
+
+            $user = User::where('username', $username)->first();
+            if ($user) {
+                Auth::login($user);
+
+                return redirect(session()->pull('url.intended', '/'));
+            }
+        }
+
+        return view('auth.login');
+    }
+
     public function login()
     {
         if (Auth::attempt(request(['email', 'password']))) {

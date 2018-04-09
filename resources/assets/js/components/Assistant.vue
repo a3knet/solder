@@ -3,9 +3,9 @@
         <div v-if="show" class="notification is-info" key="show">
             <button class="delete" @click="dismiss()" v-if="hasLocalStorage"></button>
             <nav class="columns">
-                <div class="column is-narrow">
-                    <div class="image is-64x64 is-pulled-left">
-                        <img src="/img/book.png" />
+                <div class="column w-1">
+                    <div class="image pull-left">
+                        <img width="64px" height="64px" src="/img/book.png" />
                     </div>
                 </div>
                 <div class="column is-size-5">
@@ -14,7 +14,7 @@
             </nav>
         </div>
         <div v-else key="hide">
-            <button class="recall" @click="recall()" v-if="hasLocalStorage"></button>
+            <button class="recall close" @click="recall()" v-if="hasLocalStorage"><span>x</span></button>
         </div>
     </transition>
 </template>

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-Route::view('/login', 'auth.login')->name('auth.show-login');
+Route::get('/login', 'Auth\LoginController@show')->name('auth.show-login');
 Route::post('/login', 'Auth\LoginController@login')->name('auth.login');
 Route::post('/logout', 'Auth\LoginController@logout')->name('auth.logout');
 
