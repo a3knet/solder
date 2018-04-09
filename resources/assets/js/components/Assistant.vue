@@ -1,20 +1,23 @@
 <template>
     <transition name="slide-fade" mode="out-in">
-        <div v-if="show" class="notification is-info" key="show">
-            <button class="delete" @click="dismiss()" v-if="hasLocalStorage"></button>
-            <nav class="columns">
-                <div class="column w-1">
+        <div v-if="show" class="alert alert-info" role="alert" key="show">
+            <button type="button" class="close pull-right" @click="dismiss()" v-if="hasLocalStorage" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <!--<button class="btn btn-light pull-right" @click="dismiss()" v-if="hasLocalStorage"><i class="fa fa-times-circle"></i></button>-->
+            <nav class="row">
+                <div class="col-sm-1">
                     <div class="image pull-left">
                         <img width="64px" height="64px" src="/img/book.png" />
                     </div>
                 </div>
-                <div class="column is-size-5">
+                <div class="col-sm-11">
                     <slot></slot>
                 </div>
             </nav>
         </div>
         <div v-else key="hide">
-            <button class="recall close" @click="recall()" v-if="hasLocalStorage"><span>x</span></button>
+            <button class="close pull-right" @click="recall()" v-if="hasLocalStorage"><i class="fa fa-question-circle"></i></button>
         </div>
     </transition>
 </template>
