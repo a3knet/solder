@@ -25,7 +25,7 @@
                 <label class="col-sm-2 col-form-label" for="package-release-archive">File</label>
                 <div class="col-sm-10">
                     <div class="input-group">
-                        <input type="file" class="{{ $errors->has('modpack_icon') ? 'is-invalid' : '' }}" id="package-release-archive" name="archive" />
+                        <input type="file" class="{{ $errors->has('archive') ? 'is-invalid' : '' }}" id="package-release-archive" name="archive" />
                     </div>
                     <small id="archiveHelpBlock" class="form-text text-muted">
                         <span class="icon">
@@ -35,6 +35,22 @@
                     @if($errors->has('archive'))
                         <div class="invalid-feedback">
                             {{ $errors->first('archive') }}
+                        </div>
+                    @endif
+                    <br>
+                    or
+                    <br><br>
+                    <div class="input-group">
+                        <input class="form-control {{ $errors->has('custom_url') ? 'is-invalid' : '' }}" id="package-release-customurl" name="custom_url" placeholder="http://..." value="{{ old('custom_url') }}" />
+                    </div>
+                    <small id="customUrlHelpBlock" class="form-text text-muted">
+                        <span class="icon">
+                            <i class="fa fa-upload"></i>
+                        </span>Enter a solder file archive (zip) custom URL for direct client download.
+                    </small>
+                    @if($errors->has('custom_url'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('custom_url') }}
                         </div>
                     @endif
                 </div>

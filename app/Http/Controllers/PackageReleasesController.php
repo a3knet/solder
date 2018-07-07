@@ -37,20 +37,30 @@ class PackageReleasesController extends Controller
 
         request()->validate([
             'version' => ['required', 'regex:/^[a-zA-Z0-9_-][.a-zA-Z0-9_-]*$/', Rule::unique('releases')->where('package_id', $package->id)],
-            'archive' => ['mimes:zip'],
+            'archive' => ['required_without:custom_url', 'mimes:zip'],
+            'custom_url' => ['nullable','required_without:archive', 'url'],
         ]);
 
-        $archive = request()
-            ->file('archive')
-            ->storeAs($package->slug, "{$package->slug}-{$request->version}.zip");
+        if (request()->file('archive')) {
+            $archive = request()
+                ->file('archive')
+                ->storeAs($package->slug, "{$package->slug}-{$request->version}.zip");
 
-        Release::create([
-            'package_id' => $package->id,
-            'version' => $request->version,
-            'path' => $archive,
-            'md5' => FileHash::hash(Storage::url($archive)),
-            'filesize' => request()->file('archive')->getSize(),
-        ]);
+            Release::create([
+                'package_id' => $package->id,
+                'version' => $request->version,
+                'path' => $archive,
+                'md5' => FileHash::hash(Storage::url($archive)),
+                'filesize' => request()->file('archive')->getSize(),
+            ]);
+        } elseif ($request->custom_url) {
+            Release::create([
+                'package_id' => $package->id,
+                'version' => $request->version,
+                'path' => $request->custom_url,
+                'md5' => md5_file($request->custom_url),
+            ]);
+        }
 
         return redirect("/library/$packageSlug");
     }

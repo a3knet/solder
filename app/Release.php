@@ -69,7 +69,12 @@ class Release extends Model
      */
     public function getUrlAttribute()
     {
-        return Storage::url($this->path);
+        if (preg_match('/^http[s]:\/\//', $this->path)) {
+            return $this->path;
+        } else {
+            return Storage::url($this->path);
+        }
+
     }
 
     /**
