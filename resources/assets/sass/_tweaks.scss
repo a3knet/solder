@@ -11,6 +11,14 @@ p.code {
   margin-right: 0.2rem;
 }
 
+.invalid-feedback {
+  display: block !important;
+}
+
+.invalid-tooltip {
+  display: block !important;
+}
+
 // Make the Bulma box element act more like a Bootstrap panel (I know, blasphemous)
 // We now have bootstrap... disable
 /*.box {
