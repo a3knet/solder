@@ -1,5 +1,5 @@
 <template>
-    <table class="table is-fullwidth">
+    <table class="table w-100">
         <thead>
         <tr>
             <th>Name</th>
@@ -13,8 +13,8 @@
             <td>{{ row.package.name }}</td>
             <td>{{ row.version }}</td>
             <td>{{ row.filesize | prettyBytes }}</td>
-            <td class="has-text-right">
-                <a @click="destroy(row)" class="button is-small is-outlined is-danger">Remove</a>
+            <td class="text-right">
+                <a @click="destroy(row)" class="btn btn-small btn-danger">Remove</a>
             </td>
         </tr>
         </tbody>

@@ -1,21 +1,26 @@
-// Colors
-$info: #4fb0f2;
-$brand: #2789CA;
-$primary: #347AB7;
-$dark: #2A6292;
-$success: #5cb85c;
-$warning: #f0ad4e;
-$danger: #d9534f;
-$light: #f1f3f5;
 
-// Fonts
-$family-sans-serif: 'Open Sans', BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+// Body
+$body-bg: #fff;
 
-// Menu Overrides
-$menu-item-hover-color: $primary;
-$menu-item-hover-background-color: $light;
-$menu-item-active-color: $primary;
-$menu-item-active-background-color: $light;
+// Borders
+$laravel-border-color: darken($body-bg, 10%);
+$list-group-border-color: $laravel-border-color;
 
-// Footer Overrides
-$footer-background-color: $grey-lighter;
+$card-border-color: $laravel-border-color;
+
+// Brands
+$primary: #3097D1;
+$info: #8eb4cb;
+$success: #2ab27b;
+$warning: #cbb956;
+$danger: #bf5329;
+
+// Typography
+$font-family-sans-serif: "Raleway", sans-serif;
+$font-size-base: .875rem; // 14px
+$line-height-base: 1.6;
+$text-color: #636b6f;
+
+// Inputs
+$input-border-color: lighten($text-color, 40%);
+$input-placeholder-color: lighten($text-color, 30%);

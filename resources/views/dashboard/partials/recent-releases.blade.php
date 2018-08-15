@@ -1,6 +1,5 @@
-<div class="box">
-    <h1>Recently Uploaded Package Versions</h1>
-    <table class="table is-fullwidth">
+<b-card header="Recently Uploaded Package Versions" class="solder-card">
+    <table class="table w-100">
         <thead>
         <tr>
             <th>Version</th>
@@ -13,11 +12,11 @@
             <tr>
                 <td>{{ $release->version }}</td>
                 <td>
-                    <a href="/library/{{ $release->package->slug }}">
+                    <a href="{{ route('library.show', ['package' => $release->package->slug]) }}">
                         <strong>{{ $release->package->name }}</strong>
                     </a>
                 </td>
-                <td class="is-narrow">{{ $release->created }}</td>
+                <td class="w-1">{{ $release->created }}</td>
             </tr>
         @endforeach
         </tbody>

@@ -2,55 +2,39 @@
   min-height: 100vh;
 }
 
-.has-text-capitalized {
-  text-transform: uppercase;
+.badge-public {
+  @extend .badge-success;
 }
 
-.has-padding-right-3 {
-  padding-right: $size-3;
+.badge-private {
+  @extend .badge-warning;
 }
 
-.has-text-public {
-  @extend .has-text-success;
+.badge-draft {
+  @extend .badge-danger;
 }
 
-.has-text-private {
-  @extend .has-text-warning;
+.btn-public {
+  @extend .btn-success;
 }
 
-.has-text-draft {
-  @extend .has-text-danger;
+.btn-private {
+  @extend .btn-warning;
 }
 
-.section.is-small {
-  padding: 0.75rem;
+.btn-draft {
+  @extend .btn-danger;
 }
 
-@each $name, $pair in $colors {
-  .has-background-#{$name} {
-    background-color: nth($pair, 1);
-  }
+.solder-card {
+  margin-top: 0.5rem;
 }
 
-@each $name, $color in $shades {
-  .has-background-#{$name} {
-    background-color: $color;
-  }
+.solder-card .card-header {
+  background-color: #3097d1;
+  color: #fff;
 }
 
-@each $name, $pair in $colors {
-  .border-bottom-#{$name} {
-    border-bottom: 3px nth($pair, 1) solid;
-  }
+.w-1 {
+  width: 1% !important;
 }
-
-@each $name, $color in $shades {
-  .border-bottom-#{$name} {
-    border-bottom: 3px $color solid;
-  }
-
-  .border-dashed-#{$name} {
-    border: 1px $color dashed;
-  }
-}
-

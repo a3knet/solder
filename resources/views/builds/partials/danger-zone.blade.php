@@ -1,93 +1,72 @@
-<div class="box is-danger">
-    <h1>Danger Zone</h1>
-    <div class="box-body">
-        <ul class="list-group">
-            <li class="level list-group-item">
-                <div class="level-left">
-                    <div class="level-item">
-                        <div class="content">
-                            <strong>Update build status</strong><br />
-                            Change the visibility status of this build.
-                        </div>
-                    </div>
+<b-card header="Danger Zone" class="solder-card">
+    <ul class="list-group">
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-sm-6">
+                    <strong>Update build status</strong><br />
+                    <small>Change the visibility status of this build.</small>
                 </div>
-                <div class="level-right">
-                    <div class="level-item">
-                        <form method="post" action="/modpacks/{{ $build->modpack->slug }}/{{ $build->version }}">
+                <div class="col-sm-6">
+                    <div class="btn-group pull-right">
+                        <form method="post" action="{{ route('modpacks.builds.update', ['modpack' => $build->modpack->slug, 'build' => $build->version]) }}">
                             {{ csrf_field() }}
 
                             <input type="hidden" name="status" value="draft" />
-                            <button class="button {{ $build->status == 'draft' ? 'is-static' : 'is-danger' }} is-outlined" type="submit">Draft</button>
+                            <button class="btn btn-draft" type="submit" {{ $build->status == 'draft' ? 'disabled' : '' }}>Draft</button>
                         </form>
-                    </div>
-                    <div class="level-item">
-                        <form method="post" action="/modpacks/{{ $build->modpack->slug }}/{{ $build->version }}">
+                        <form method="post" action="{{ route('modpacks.builds.update', ['modpack' => $build->modpack->slug, 'build' => $build->version]) }}">
                             {{ csrf_field() }}
 
                             <input type="hidden" name="status" value="private" />
-                            <button class="button {{ $build->status == 'private' ? 'is-static' : 'is-danger' }} is-outlined" type="submit">Private</button>
+                            <button class="btn btn-private mr-1 ml-1" type="submit" {{ $build->status == 'private' ? 'disabled' : '' }}>Private</button>
                         </form>
-                    </div>
-                    <div class="level-item">
-                        <form method="post" action="/modpacks/{{ $build->modpack->slug }}/{{ $build->version }}">
+                        <form method="post" action="{{ route('modpacks.builds.update', ['modpack' => $build->modpack->slug, 'build' => $build->version]) }}">
                             {{ csrf_field() }}
 
-                            <button class="button {{ $build->status == 'public' ? 'is-static' : 'is-danger' }} is-outlined" type="submit">Public</button>
                             <input type="hidden" name="status" value="public" />
+                            <button class="btn btn-public" type="submit" {{ $build->status == 'public' ? 'disabled' : '' }}>Public</button>
                         </form>
                     </div>
                 </div>
-            </li>
-            <li class="level list-group-item">
-                <div class="level-left">
-                    <div class="level-item">
-                        <div class="content">
-                            <strong>Change build version</strong><br />
-                            The build version is used as the public key.
-                        </div>
-                    </div>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-sm-8">
+                    <strong>Change build version</strong><br />
+                    <small>The build version is used as the public key.</small>
                 </div>
-                <div class="level-right">
-                    <div class="level-item">
-                        <form method="post" action="/modpacks/{{ $build->modpack->slug }}/{{ $build->version }}">
-                            {{ csrf_field() }}
+                <div class="col-sm-4">
+                    <form class="form-inline pull-right" method="post" action="{{ route('modpacks.builds.update', ['modpack' => $build->modpack->slug, 'build' => $build->version]) }}">
+                        {{ csrf_field() }}
 
-                            <div class="field has-addons">
-                                <div class="control">
-                                    <input class="input is-danger" name="version" type="text" value="{{ old('version', $build->version) }}">
-                                    @if($errors->has('version'))
-                                        <p class="help is-danger">{{ $errors->first('version') }}</p>
-                                    @endif
-                                </div>
-                                <div class="control">
-                                    <button type="submit" class="button is-danger is-outlined">
-                                        Change
-                                    </button>
-                                </div>
+                        <input class="form-control" name="version" type="text" value="{{ old('version', $build->version) }}" />
+                        @if($errors->has('version'))
+                            <div class="invalid-feedback">
+                                {{ $errors->first('version') }}
                             </div>
-                        </form>
-                    </div>
+                        @endif
+                        <button type="submit" class="btn btn-danger">
+                            Change
+                        </button>
+                    </form>
                 </div>
-            </li>
-            <li class="level list-group-item">
-                <div class="level-left">
-                    <div class="level-item">
-                        <div class="content">
-                            <strong>Delete this build</strong><br />
-                            Once you delete a build, there is no going back. Please be certain.
-                        </div>
-                    </div>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-sm-8">
+                    <strong>Delete this build</strong><br />
+                    <small>Once you delete a build, there is no going back. Please be certain.</small>
                 </div>
-                <div class="level-right">
-                    <div class="level-item">
-                        <form method="post" action="/modpacks/{{ $build->modpack->slug }}/{{ $build->version }}">
-                            {{ csrf_field() }}
-                            {{ method_field('delete') }}
-                            <button class="button is-danger is-outlined" type="submit">Delete this build</button>
-                        </form>
-                    </div>
+                <div class="col-sm-4">
+                    <form class="pull-right" method="post" action="{{ route('modpacks.builds.destroy', ['modpack' => $build->modpack->slug, 'build' => $build->version]) }}">
+                        {{ csrf_field() }}
+                        {{ method_field('delete') }}
+                        <button class="btn btn-danger" type="submit">Delete this build</button>
+                    </form>
                 </div>
-            </li>
-        </ul>
-    </div>
-</div>
+            </div>
+        </li>
+    </ul>
+</b-card>

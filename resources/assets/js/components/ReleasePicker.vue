@@ -1,53 +1,30 @@
 <template>
     <form v-on:submit.prevent="onSubmit">
-        <div>
-            <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                    <label class="label">Package</label>
-                </div>
-                <div class="field-body">
-                    <div class="field">
-                        <div class="control is-expanded">
-                            <div class="select is-fullwidth" :class="{ 'is-loading': loadingPackage }">
-                                <select id="package" name="package_id" v-model="selectedPackage">
-                                    <option v-for="packageItem in packages" :value="packageItem.id">
-                                        {{ packageItem.name }}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="package">Package</label>
+            <div class="col-sm-10">
+                <select id="package" name="package_id" v-model="selectedPackage">
+                    <option v-for="packageItem in packages" :value="packageItem.id">
+                        {{ packageItem.name }}
+                    </option>
+                </select>
             </div>
+        </div>
 
-            <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                    <label class="label">Release</label>
-                </div>
-                <div class="field-body">
-                    <div class="field">
-                        <div class="control is-expanded">
-                            <div class="select is-fullwidth" :class="{ 'is-loading': loadingRelease }">
-                                <select name="release_id" v-model="selectedRelease">
-                                    <option v-for="release in releases" :value="release.id">
-                                        {{ release.version }}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="release">Release</label>
+            <div class="col-sm-10">
+                <select id="release" name="release_id" v-model="selectedRelease">
+                    <option v-for="release in releases" :value="release.id">
+                        {{ release.version }}
+                    </option>
+                </select>
             </div>
+        </div>
 
-            <div class="field is-horizontal">
-                <div class="field-label">
-                    &nbsp;
-                </div>
-                <div class="field-body">
-                    <div class="control">
-                        <button class="button is-primary" type="submit">Bundle</button>
-                    </div>
-                </div>
+        <div class="form-group row">
+            <div class="col-sm-10 offset-sm-2">
+                <button type="submit" class="btn btn-primary">Add Modpack</button>
             </div>
         </div>
     </form>

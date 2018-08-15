@@ -1,112 +1,88 @@
-<div class="box">
-    <h1>Package Settings</h1>
-    <div class="box-body">
-        <form method="post" action="/library/{{ $package->slug }}">
-            {{ csrf_field() }}
-            {{ method_field('patch') }}
+<b-card header="Package Settings" class="solder-card">
+    <form method="post" action="{{ route('library.update', ['package' => $package->slug]) }}">
+        {{ csrf_field() }}
+        {{ method_field('patch') }}
 
-            <!-- Name -->
-            <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                    <label class="label">Name</label>
-                </div>
-                <div class="field-body">
-                    <div class="field">
-                        <div class="control">
-                            <input class="input {{ $errors->has('name') ? 'is-danger' : '' }}" name="name"  value="{{ old('name', $package->name) }}" />
-                            @if($errors->has('name'))
-                                <p class="help is-danger">{{ $errors->first('name') }}</p>
-                            @endif
-                        </div>
+        <!-- Name -->
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="package-name">Name</label>
+            <div class="col-sm-10">
+                <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" id="package-name" name="name" value="{{ old('name', $package->name) }}" />
+                @if($errors->has('name'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('name') }}
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        <!-- Author -->
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="package-author">Author</label>
+            <div class="col-sm-10">
+                <input class="form-control {{ $errors->has('author') ? 'is-invalid' : '' }}" id="package-author" name="author" placeholder="SpaceToad" value="{{ old('author', $package->author) }}" />
+                @if($errors->has('author'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('author') }}
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        <!-- Website URL -->
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="package-website_url">Website URL</label>
+            <div class="col-sm-10">
+                <div class="input-group">
+                    <input class="form-control {{ $errors->has('website_url') ? 'is-invalid' : '' }}" id="package-website_url" name="website_url" placeholder="http://..." value="{{ old('website_url', $package->website_url) }}" />
+                    <div class="input-group-append">
+                        <a href="{{ $package->website_url }}" class="btn btn-outline-secondary {{ $package->website_url == null ? 'disabled' : '' }}" {{ $package->website_url == null ? 'aria-disabled="true"' : '' }}><i class="fa fa-fw fa-external-link"></i></a>
                     </div>
                 </div>
-            </div>
 
-            <!-- Author -->
-            <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                    <label class="label">Author</label>
-                </div>
-                <div class="field-body">
-                    <div class="field">
-                        <div class="control is-expanded">
-                            <input class="input {{ $errors->has('author') ? 'is-danger' : '' }}" type="text" name="author" placeholder="SpaceToad" value="{{ old('author', $package->author) }}"/>
-                            @if($errors->has('author'))
-                                <p class="help is-danger">{{ $errors->first('author') }}</p>
-                            @endif
-                        </div>
+                @if($errors->has('website_url'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('website_url') }}
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        <!-- Donation URL -->
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="package-donation_url">Donation URL</label>
+            <div class="col-sm-10">
+                <div class="input-group">
+                    <input class="form-control {{ $errors->has('donation_url') ? 'is-invalid' : '' }}" id="package-donation_url" name="donation_url" placeholder="http://..." value="{{ old('donation_url', $package->donation_url) }}" />
+                    <div class="input-group-append">
+                        <a href="{{ $package->donation_url }}" class="btn btn-outline-secondary {{ $package->donation_url == null ? 'disabled' : '' }}" {{ $package->donation_url == null ? 'aria-disabled="true"' : '' }}><i class="fa fa-fw fa-external-link"></i></a>
                     </div>
                 </div>
-            </div>
-
-            <!-- Website URL -->
-            <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                    <label class="label">Website URL</label>
-                </div>
-                <div class="field-body">
-                    <div class="field has-addons">
-                        <div class="control is-expanded">
-                            <input class="input {{ $errors->has('website_url') ? 'is-danger' : '' }}" type="text" name="website_url" placeholder="http://..." value="{{ old('website_url', $package->website_url) }}"/>
-                            @if($errors->has('website_url'))
-                                <p class="help is-danger">{{ $errors->first('website_url') }}</p>
-                            @endif
-                        </div>
-                        <div class="control">
-                            <a href="{{ $package->website_url }}" class="button" {{ $package->website_url == null ? 'disabled' : '' }}><i class="fa fa-fw fa-external-link"></i></a>
-                        </div>
+                @if($errors->has('donation_url'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('donation_url') }}
                     </div>
-                </div>
+                @endif
             </div>
+        </div>
 
-            <!-- Donation URL -->
-            <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                    <label class="label">Donation URL</label>
-                </div>
-                <div class="field-body">
-                    <div class="field has-addons">
-                        <div class="control is-expanded">
-                            <input class="input {{ $errors->has('donation_url') ? 'is-danger' : '' }}" type="text" name="donation_url" placeholder="http://..." value="{{ old('donation_url', $package->donation_url) }}"/>
-                            @if($errors->has('donation_url'))
-                                <p class="help is-danger">{{ $errors->first('donation_url') }}</p>
-                            @endif
-                        </div>
-                        <div class="control">
-                            <a href="{{ $package->donation_url }}" class="button" {{ $package->donation_url == null ? 'disabled' : '' }}><i class="fa fa-fw fa-usd"></i></a>
-                        </div>
+        <!-- Description -->
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label text-nowrap" for="package-description">Description</label>
+            <div class="col-sm-10">
+                <textarea class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" id="package-description" name="description">{{ old('description', $package->description) }}</textarea>
+                @if($errors->has('description'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('description') }}
                     </div>
-                </div>
+                @endif
             </div>
+        </div>
 
-            <!-- Description -->
-            <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                    <label class="label">Description</label>
-                </div>
-                <div class="field-body">
-                    <div class="field">
-                        <div class="control is-expanded">
-                            <textarea class="textarea {{ $errors->has('description') ? 'is-danger' : '' }}" name="description">{{ old('description', $package->description) }}</textarea>
-                            @if($errors->has('description'))
-                                <p class="help is-danger">{{ $errors->first('description') }}</p>
-                            @endif
-                        </div>
-                    </div>
-                </div>
+        <div class="form-group row">
+            <div class="col-sm-10 offset-sm-2">
+                <button type="submit" class="btn btn-primary">Update</button>
             </div>
-
-            <div class="field is-horizontal">
-                <div class="field-label">
-                    &nbsp;
-                </div>
-                <div class="field-body">
-                    <div class="control">
-                        <button class="button" type="submit">Update</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-
-    </div>
-</div>
+        </div>
+    </form>
+</b-card>

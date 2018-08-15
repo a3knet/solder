@@ -1,5 +1,4 @@
-<div class="box">
-    <h1>Recently Updated Modpacks</h1>
+<b-card header="Recently Updated Modpacks" class="solder-card">
     <table class="table is-fullwidth">
         <thead>
         <tr>
@@ -13,19 +12,19 @@
         @foreach($builds as $build)
             <tr>
                 <td>
-                    <a href="/modpacks/{{ $build->modpack->slug }}/{{ $build->version }}">
+                    <a href="{{ route('modpacks.builds.show', ['modpack' => $build->modpack->slug, 'build' => $build->version]) }}">
                         <strong>{{ $build->version }}</strong>
                     </a>
                 </td>
                 <td>
-                    <a href="/modpacks/{{ $build->modpack->slug }}">
+                    <a href="{{ route('modpacks.show', ['modpack' => $build->modpack->slug]) }}">
                         <strong>{{ $build->modpack->name }}</strong>
                     </a>
                 </td>
                 <td>{{ $build->minecraft }}</td>
-                <td class="is-narrow">{{ $build->created }}</td>
+                <td class="w-1">{{ $build->created }}</td>
             </tr>
         @endforeach
         </tbody>
     </table>
-</div>
+</b-card>

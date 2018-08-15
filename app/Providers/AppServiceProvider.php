@@ -39,8 +39,8 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
         // Load modpacks for the directory partial view.
-        View::composer('partials.directory', function ($view) {
-            $view->with('directory', Modpack::orderBy('name')->get());
+        View::composer('partials.navigation', function ($view) {
+            $view->with('modpacks', Modpack::orderBy('name')->get());
         });
 
         Blade::if('assistant', function () {

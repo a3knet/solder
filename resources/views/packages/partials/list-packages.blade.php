@@ -1,6 +1,5 @@
-<div class="box">
-    <h1>Packages</h1>
-    <table class="table is-fullwidth">
+<b-card header="Packages" class="solder-card">
+    <table class="table w-100">
         <thead>
         <tr>
             <th>Name</th>
@@ -13,38 +12,34 @@
         @foreach($packages as $package)
             <tr>
                 <td>
-                    <a href="/library/{{ $package->slug }}">
+                    <a href="{{ route('library.show', ['package'=> $package->slug]) }}">
                         <strong>{{ $package->name }}</strong>
                     </a>
                 </td>
                 <td>{{ $package->author }}</td>
                 <td>
-                    <div class="field has-addons">
-                        <p class="control">
-                            <a href="{{ $package->website_url }}" class="button is-small" {{ $package->website_url == null ? 'disabled' : '' }}>
-                              <span class="icon is-small">
+                    <div class="btn-group" role="group" aria-label="URLs">
+                        <a href="{{ $package->website_url }}" class="btn btn-sm btn-light btn-secondary {{ $package->website_url == null ? 'disabled' : '' }}" role="button" aria-pressed="true" {{ $package->website_url == null ? 'aria-disabled="true"' : '' }}>
+                            <span class="icon">
                                 <i class="fa fa-external-link"></i>
-                              </span>
-                            </a>
-                        </p>
-                        <p class="control">
-                            <a href="{{ $package->donation_url }}" class="button is-small" {{ $package->donation_url == null ? 'disabled' : '' }}>
-                              <span class="icon is-small">
-                                <i class="fa fa-usd"></i>
-                              </span>
-                            </a>
-                        </p>
+                            </span>
+                        </a>
+                        <a href="{{ $package->donation_url }}" class="btn btn-sm btn-light btn-secondary {{ $package->donation_url == null ? 'disabled' : '' }}" role="button" aria-pressed="true" {{ $package->donation_url == null ? 'aria-disabled="true"' : '' }}>
+                            <span class="icon">
+                                <i class="fa fa-external-link"></i>
+                            </span>
+                        </a>
                     </div>
                 </td>
-                <td class="has-text-right">
-                    <form method="post" action="/library/{{ $package->slug }}">
+                <td class="text-right">
+                    <form method="post" action="{{ route('library.destroy', ['package' => $package->slug]) }}">
                         {{ csrf_field() }}
                         {{ method_field('delete') }}
-                        <button class="button is-danger is-small is-outlined">Delete</button>
+                        <button class="btn btn-danger btn-small">Delete</button>
                     </form>
                 </td>
             </tr>
         @endforeach
         </tbody>
     </table>
-</div>
+</b-card>

@@ -1,7 +1,6 @@
 <template>
-    <div class="box">
-        <h1>Releases</h1>
-        <table class="table is-fullwidth">
+    <b-card header="Releases" class="solder-card">
+        <table class="table w-100">
             <thead>
             <tr>
                 <th>Version</th>
@@ -13,7 +12,7 @@
             </thead>
             <tfoot v-if="rows.length == 0">
             <tr>
-                <td colspan="4" class="has-text-centered">There are no releases, get started by uploading one.</td>
+                <td colspan="4" class="text-center">There are no releases, get started by uploading one.</td>
             </tr>
             </tfoot>
             <tbody>
@@ -27,19 +26,19 @@
                         {{ release.filename }}
                     </a>
                 </td>
-                <td class="has-text-right">
-                    <a @click="destroy(release)" class="button is-small is-outlined is-danger">Remove</a>
+                <td class="text-right">
+                    <a href='#' @click="destroy(release)" class="btn btn-small btn-danger">Remove</a>
                 </td>
             </tr>
             </tbody>
 
         </table>
-    </div>
+    </b-card>
 </template>
 
 <script>
     export default{
-        props: ['releases'],
+        props: ['releases', 'baseurl'],
         data(){
             return{
                 rows: []
@@ -50,7 +49,7 @@
         },
         methods: {
             destroy: function(release) {
-                axios.delete('/releases/' + release.id)
+                axios.delete(this.baseurl + '/releases/' + release.id)
                 .then((response) => {
                     this.rows.splice(this.rows.indexOf(release), 1)
                 })

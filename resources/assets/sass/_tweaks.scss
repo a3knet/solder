@@ -7,8 +7,13 @@ p.code {
   }
 }
 
+.icon {
+  margin-right: 0.2rem;
+}
+
 // Make the Bulma box element act more like a Bootstrap panel (I know, blasphemous)
-.box {
+// We now have bootstrap... disable
+/*.box {
   padding: $size-5 1px 1px 1px;
 
   &.is-danger {
@@ -35,10 +40,10 @@ p.code {
   .table {
     margin-bottom: 0px;
   }
-}
+} */
 
 // Tone down the placeholder, and make it disappear when the input is focused
-.input {
+/*.input {
   &::placeholder {
     color: $grey-light;
   }
@@ -47,9 +52,9 @@ p.code {
       color: transparent;
     }
   }
-}
+} */
 
 // Adjust footer padding since we're using it inside a container
-.footer {
+/* .footer {
   padding: 3rem 0;
-}
+} */

@@ -9,26 +9,29 @@
         in the docs.
     </assistant>
 
-    <section class="section">
+    <h1 class="title">Package: {{ $package->name }}</h1>
 
-        <div class="level">
-            <div class="level-left"></div>
-            <div class="level-right">
-                <div class="level-item">{{ $package->name }}</div>
-            </div>
-        </div>
+    <b-tabs>
+        <b-tab active>
+            <template slot="title">
+                <span class="icon"><i class="fa fa-wrench"></i></span>General
+            </template>
+            @can('update', $package)
+                @include('packages.partials.update-package')
+                @include('packages.partials.danger-zone')
+            @endcan
+        </b-tab>
+        <b-tab>
+            <template slot="title">
+                <span class="icon"><i class="fa fa-cogs"></i></span>Release
+            </template>
+            @can('create', App\Release::class)
+                @include('packages.partials.create-release')
+            @endcan
 
-        @can('create', App\Release::class)
-            @include('packages.partials.create-release')
-        @endcan
-
-        @if(count($package->releases))
-            <release-table :releases='{{ json_encode($package->releases) }}'></release-table>
-        @endif
-
-        @can('update', $package)
-            @include('packages.partials.update-package')
-            @include('packages.partials.danger-zone')
-        @endcan
-    </section>
+            @if(count($package->releases))
+                <release-table baseurl="{{ route('dashboard.show') }}" :releases='{{ json_encode($package->releases) }}'></release-table>
+            @endif
+        </b-tab>
+    </b-tabs>
 @endsection
